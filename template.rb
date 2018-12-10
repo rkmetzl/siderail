@@ -191,7 +191,7 @@ def get_user_input(prompt)
     down_string: user_const
   }
 
-  temp_generators = @result[:generators]
+  temp_generators = result[:generators]
   result[:generators] = {}.tap{ |h| generator_options.each {|g| h[g] = temp_generators.index(g).present? } }
 
   result
