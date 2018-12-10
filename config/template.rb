@@ -31,11 +31,11 @@ insert_into_file \
   after: /config\.generators do \|g\|\n/ do
 
   <<-RUBY
-    g.helper          #{@generators["helper"]}
-    g.assets          #{@generators["assets"]}
-    g.javascripts     #{@generators["javascripts"]}
-    g.stylesheets     #{@generators["stylesheets"]}
-    g.jbuilder        #{@generators["jbuilder"]}
+    g.helper          #{@result[:generators]["helper"]}
+    g.assets          #{@result[:generators]["assets"]}
+    g.javascripts     #{@result[:generators]["javascripts"]}
+    g.stylesheets     #{@result[:generators]["stylesheets"]}
+    g.jbuilder        #{@result[:generators]["jbuilder"]}
     g.template_engine #{@result[:views].to_s}
   RUBY
 end

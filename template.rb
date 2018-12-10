@@ -25,6 +25,15 @@ def build_app!
   assert_minimum_rails_version
   add_template_repository_to_source_path
 
+  input_confirm = false
+  while !input_confirm
+    @result = get_user_input
+    pp @result
+    input_confirm = prompt.yes?("Are these the correct settings?", default: false)
+  end
+
+  debug_print("Applying settings")
+
   # Take action
 
   debug_print('Copying root config files...')
@@ -49,15 +58,6 @@ def build_app!
     git :init
 
     stop_spring
-
-    input_confirm = false
-    while !input_confirm
-      @result = get_user_input
-      pp @result
-      input_confirm = prompt.yes?("Are these the correct settings?", default: false)
-    end
-
-    debug_print("Applying settings...")
 
     # Copy variants as necessary
     apply 'variants/devise/template.rb'         if @result.dig(:user, :authentication)
