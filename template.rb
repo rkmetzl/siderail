@@ -27,7 +27,8 @@ def build_app!
 
   input_confirm = false
   while !input_confirm
-    @result = get_user_input
+    prompt = TTY::Prompt.new(help_color: :yellow, prefix: '[?] ')
+    @result = get_user_input(prompt)
     pp @result
     input_confirm = prompt.yes?("Are these the correct settings?", default: false)
   end
@@ -143,15 +144,11 @@ def stop_spring
   run 'spring stop'
 end
 
-def prompt
-  @prompt ||= TTY::Prompt.new(help_color: :yellow, prefix: '[?] ')
-end
-
 def debug_print(message = '')
   puts Pastel.new.yellow message
 end
 
-def get_user_input
+def get_user_input(prompt)
   views = [
     "haml",
     "erb",
