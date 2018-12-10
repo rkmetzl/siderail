@@ -70,7 +70,6 @@ def build_app!
   # Make some variables easily accessible
   user_const = (@result.dig(:user, :model_name) || "user").underscore
   @user_class = {
-    klass: user_const.camelize.constantize,
     up_string: user_const.camelize,
     down_string: user_const
   }
