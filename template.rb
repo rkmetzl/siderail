@@ -5,15 +5,6 @@ require 'bundler/inline'
 YARG_REPO = 'https://github.com/rkmetzl/yarg.git'.freeze
 RAILS_REQUIREMENT = '~> 5.2.0'.freeze
 
-install_gem 'tty-prompt' # Used for this script
-install_gem 'foreman' # Used to start app locally
-install_gem 'highline'
-
-unless TTY::Prompt::VERSION
-  puts "TTY was not able to install. Check that bundler is working correctly."
-  return
-end
-
 #TODO:
 # X Support custom user model names in Devise templates
 # X test Slim converting from erb
@@ -21,6 +12,16 @@ end
 
 def build_app!
   debug_print('Checking your environment setup...')
+
+  install_gem 'tty-prompt' # Used for this script
+  install_gem 'foreman' # Used to start app locally
+  install_gem 'highline'
+
+  unless TTY::Prompt::VERSION
+    puts "TTY was not able to install. Check that bundler is working correctly."
+    return
+  end
+
   # Template set up checks
   assert_minimum_rails_version
   add_template_repository_to_source_path
