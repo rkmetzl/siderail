@@ -5,12 +5,9 @@ require 'bundler/inline'
 YARG_REPO = 'https://github.com/rkmetzl/yarg.git'.freeze
 RAILS_REQUIREMENT = '~> 5.2.0'.freeze
 
-gemfile(true) do
-  source 'https://rubygems.org'
-  gem 'tty-prompt' # Used for this script
-  gem 'foreman' # Used to start app locally
-  gem 'highline'
-end
+install_gem 'tty-prompt' # Used for this script
+install_gem 'foreman' # Used to start app locally
+install_gem 'highline'
 
 unless TTY::Prompt::VERSION
   puts "TTY was not able to install. Check that bundler is working correctly."
@@ -158,6 +155,15 @@ def add_template_repository_to_source_path
     end
   else
     source_paths.unshift(File.dirname(__FILE__))
+  end
+end
+
+def install_gem(gemname)
+  if !Gem::Specification::find_all_by_name(gemname).any?
+    gemfile(true) do
+      source 'https://rubygems.org'
+      gem gemname
+    end
   end
 end
 
