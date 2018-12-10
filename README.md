@@ -8,7 +8,7 @@ A generator for Rails apps, designed with some boilerplate settings to get you u
 ## Requirements
 
 This template currently depends on you having the following:
-- Ruby 2.x
+- Ruby 2.5.x
 - Rails 5.2.x
 - PostgreSQL
 - Redis

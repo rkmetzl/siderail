@@ -17,6 +17,7 @@ def build_app!
   install_gem 'pastel'
   install_gem 'foreman' # Used to start app locally
   install_gem 'highline'
+  install_gem 'html2slim'
 
   debug_print('Checking your environment setup...')
 
@@ -49,9 +50,7 @@ def build_app!
     # ORM
     key(:activestorage).yes?("Do you want to use ActiveStorage?")
 
-    # Generators
-    # System
-    key(:jbuilder).no?("Do you want to enable jbuilder?")
+    key(:generators).multi_select("Enable which generators?", generator_options, default: [1])
 
     # User Management
     if prompt.yes?("Will this app have users?")
@@ -61,8 +60,6 @@ def build_app!
         key(:authorization).yes?("Do you want to install Pundit to manage user access control?")
       end
     end
-
-    key(:generators).multi_select("Enable which generators?", generator_options, default: [1])
 
     key(:sentry).yes?("Do you want to use Sentry for error reporting?")
 
