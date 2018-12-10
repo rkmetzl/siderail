@@ -184,7 +184,7 @@ def stop_spring
 end
 
 def debug_print(message = '')
-  pastel.blue.bold message
+  puts Pastel.new.blue.bold message
 end
 
 build_app!
