@@ -14,6 +14,7 @@ def build_app!
   debug_print('Checking your environment setup...')
 
   install_gem 'tty-prompt' # Used for this script
+  install_gem 'pastel'
   install_gem 'foreman' # Used to start app locally
   install_gem 'highline'
 
@@ -183,9 +184,7 @@ def stop_spring
 end
 
 def debug_print(message = '')
-  puts "==================="
-  puts message
-  puts "==================="
+  pastel.blue.bold message
 end
 
 build_app!
