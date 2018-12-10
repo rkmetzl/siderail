@@ -21,12 +21,9 @@ insert_into_file 'app/controllers/application_controller.rb', before: /^end/ do
 
   def set_raven_context
     Raven.extra_context(
-      params: params.to_unsafe_h, 
+      params: params.to_unsafe_h,
       url: request.url
     )
   end
 EOF
 end
-
-git add: '.'
-git commit: %Q{ -m 'Initial Sentry setup.' }

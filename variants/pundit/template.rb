@@ -9,6 +9,3 @@ insert_into_file 'app/controllers/application_controller.rb', after: /ActionCont
   include Pundit
 EOF
 end
-
-git add: '.'
-git commit: %Q{ -m 'Initial pundit setup.' }

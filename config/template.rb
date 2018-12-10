@@ -2,7 +2,7 @@
 
 insert_into_file "config/application.rb", before: /^  end/ do
   <<-EOF
-  
+
     # Use sidekiq to process Active Jobs (e.g. ActionMailer's deliver_later)
     config.active_job.queue_adapter = :sidekiq
 
@@ -23,3 +23,19 @@ copy_file 'config/initializers/kaminari.rb'
 copy_file 'config/initializers/meta_tags.rb'
 copy_file 'config/initializers/rotate_log.rb'
 copy_file 'config/initializers/sidekiq.rb'
+
+# update jbuilder
+
+insert_into_file \
+  "config/initializers/generators.rb",
+  after: /config\.generators do \|g\|\n/ do
+
+  <<-RUBY
+    g.helper          #{@generators["helper"]}
+    g.assets          #{@generators["assets"]}
+    g.javascripts     #{@generators["javascripts"]}
+    g.stylesheets     #{@generators["stylesheets"]}
+    g.jbuilder        #{@generators["jbuilder"]}
+    g.template_engine #{@result[:views].to_s}
+  RUBY
+end
