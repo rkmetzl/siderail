@@ -116,11 +116,13 @@ def build_app!
 
     # This should run last since it converts all generated ERB
     # to HAML
-    case @result["views"]
+    case @result[:views]
     when "haml"
       apply 'variants/haml/template.rb'
     when "slim"
       apply 'variants/slim/template.rb'
+    else
+      debug_print "Using ERB"
     end
 
     debug_print('Running bin/setup to finish setting up your environment...')
@@ -186,7 +188,7 @@ def stop_spring
 end
 
 def debug_print(message = '')
-  puts Pastel.new.blue.bold message
+  puts Pastel.new.yellow message
 end
 
 build_app!
