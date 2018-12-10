@@ -30,7 +30,8 @@ def build_app!
     prompt = TTY::Prompt.new(help_color: :yellow, prefix: '[?] ')
     @result = get_user_input(prompt)
     pp @result
-    input_confirm = prompt.yes?("Are these the correct settings?", default: false)
+    debug_print("CONFIRM:")
+    input_confirm = prompt.yes?("Are the above settings all correct?", default: false)
   end
 
   debug_print("Applying settings")
@@ -192,7 +193,7 @@ def get_user_input(prompt)
   }
 
   temp_generators = result[:generators]
-  result[:generators] = {}.tap{ |h| generator_options.each {|g| h[g] = temp_generators.index(g).present? } }
+  result[:generators] = {}.tap{ |h| generator_options.each {|g| h[g.to_sym] = temp_generators.index(g).present? } }
 
   result
 end
