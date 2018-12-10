@@ -3,3 +3,4 @@ insert_into_file 'Gemfile', "gem 'html2slim'\n", after: /["']kaminari['"]\n/
 
 run 'bundle install'
 run 'erb2slim app/views/ app/views/'
+run 'rm -r app/views/**/*.erb'

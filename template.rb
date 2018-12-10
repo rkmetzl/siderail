@@ -5,11 +5,6 @@ require 'bundler/inline'
 YARG_REPO = 'https://github.com/rkmetzl/yarg.git'.freeze
 RAILS_REQUIREMENT = '~> 5.2.0'.freeze
 
-#TODO:
-# X Support custom user model names in Devise templates
-# X test Slim converting from erb
-# - Test!!!
-
 def build_app!
   puts "initializing..."
 
@@ -29,55 +24,6 @@ def build_app!
   # Template set up checks
   assert_minimum_rails_version
   add_template_repository_to_source_path
-
-  prompt = TTY::Prompt.new(help_color: :yellow, prefix: '[?] ')
-
-  views = [
-    "haml",
-    "erb",
-    "slim"
-  ]
-
-  generator_options = [
-    "helper",
-    "assets",
-    "javascripts",
-    "stylesheets",
-    "jbuilder"
-  ]
-
-  @result = prompt.collect do
-    # ORM
-    key(:activestorage).yes?("Do you want to use ActiveStorage?")
-
-    key(:generators).multi_select("Enable which generators?", generator_options, default: [1])
-
-    # User Management
-    if prompt.yes?("Will this app have users?")
-      key(:user) do
-        key(:model_name).ask("What is the name of your user model?", default: "user")
-        key(:authentication).yes?("Do you want to install Devise to manage user authentication?")
-        key(:authorization).yes?("Do you want to install Pundit to manage user access control?")
-      end
-    end
-
-    key(:sentry).yes?("Do you want to use Sentry for error reporting?")
-
-    # Views
-    key(:views).select("What view templating system would you like to use?", views)
-  end
-
-  # Make some variables easily accessible
-  user_const = (@result.dig(:user, :model_name) || "user").underscore
-  @user_class = {
-    up_string: user_const.camelize,
-    down_string: user_const
-  }
-  @generators = {}.tap{ |h| generator_options.each {|g| h[g] = @result[:generators].index(g).present? } }
-
-  pp @results
-  pp @user_class
-  pp @generators
 
   # Take action
 
@@ -103,6 +49,15 @@ def build_app!
     git :init
 
     stop_spring
+
+    input_confirm = false
+    while !input_confirm
+      @result = get_user_input
+      pp @result
+      input_confirm = prompt.yes?("Are these the correct settings?", default: false)
+    end
+
+    debug_print("Applying settings...")
 
     # Copy variants as necessary
     apply 'variants/devise/template.rb'         if @result.dig(:user, :authentication)
@@ -136,6 +91,8 @@ def build_app!
   end
 end
 
+
+
 # Copied from: https://github.com/mattbrictson/rails-template
 # Add this template directory to source_paths so that Thor actions like
 # copy_file and template resolve against our source files. If this file was
@@ -160,6 +117,8 @@ def add_template_repository_to_source_path
   end
 end
 
+# Installs and uses any gems we need for running this templating script itself.
+# These won't necessarily be included in the new project's gemfile.
 def install_gem(gemname)
   if !Gem::Specification::find_all_by_name(gemname).any?
     gemfile(true) do
@@ -184,8 +143,61 @@ def stop_spring
   run 'spring stop'
 end
 
+def prompt
+  @prompt ||= TTY::Prompt.new(help_color: :yellow, prefix: '[?] ')
+end
+
 def debug_print(message = '')
   puts Pastel.new.yellow message
+end
+
+def get_user_input
+  views = [
+    "haml",
+    "erb",
+    "slim"
+  ]
+
+  generator_options = [
+    "helper",
+    "assets",
+    "javascripts",
+    "stylesheets",
+    "jbuilder"
+  ]
+
+  result = prompt.collect do
+    # ORM
+    key(:activestorage).yes?("Do you want to use ActiveStorage?")
+
+    key(:generators).multi_select("Enable which generators?", generator_options, default: [1])
+
+    # User Management
+    if prompt.yes?("Will this app have users?")
+      key(:user) do
+        key(:model_name).ask("What is the name of your user model?", default: "user")
+        key(:authentication).yes?("Do you want to install Devise to manage user authentication?")
+        key(:authorization).yes?("Do you want to install Pundit to manage user access control?")
+      end
+    end
+
+    key(:sentry).yes?("Do you want to use Sentry for error reporting?")
+
+    # Views
+    key(:views).select("What view templating system would you like to use?", views)
+  end
+
+  # Make some variables easily accessible
+  user_const = (result.dig(:user, :model_name) || "user").underscore
+  result[:user_class] = {
+    up_string: user_const.camelize,
+    down_string: user_const
+  }
+
+  temp_generators = @result[:generators]
+  result[:generators] = {}.tap{ |h| generator_options.each {|g| h[g] = temp_generators.index(g).present? } }
+
+  result
 end
 
 build_app!
