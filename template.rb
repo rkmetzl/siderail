@@ -5,13 +5,11 @@ require 'bundler/inline'
 YARG_REPO = 'https://github.com/rkmetzl/yarg.git'.freeze
 RAILS_REQUIREMENT = '~> 5.2.0'.freeze
 
-if !Gem.available?('tty-prompt')
-  gemfile(true) do
-    source 'https://rubygems.org'
-    gem 'tty-prompt' # Used for this script
-    gem 'foreman' # Used to start app locally
-    gem 'highline'
-  end
+gemfile(true) do
+  source 'https://rubygems.org'
+  gem 'tty-prompt' # Used for this script
+  gem 'foreman' # Used to start app locally
+  gem 'highline'
 end
 
 unless TTY::Prompt::VERSION
@@ -19,11 +17,9 @@ unless TTY::Prompt::VERSION
   return
 end
 
-
-
 #TODO:
 # X Support custom user model names in Devise templates
-# - test Slim converting from erb
+# X test Slim converting from erb
 # - Test!!!
 
 def build_app!
