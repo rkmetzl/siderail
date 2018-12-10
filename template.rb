@@ -11,12 +11,14 @@ RAILS_REQUIREMENT = '~> 5.2.0'.freeze
 # - Test!!!
 
 def build_app!
-  debug_print('Checking your environment setup...')
+  puts "initializing..."
 
   install_gem 'tty-prompt' # Used for this script
   install_gem 'pastel'
   install_gem 'foreman' # Used to start app locally
   install_gem 'highline'
+
+  debug_print('Checking your environment setup...')
 
   unless TTY::Prompt::VERSION
     puts "TTY was not able to install. Check that bundler is working correctly."
