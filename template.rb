@@ -166,6 +166,7 @@ def install_gem(gemname)
       gem gemname
     end
   end
+  require gemname
 end
 
 def assert_minimum_rails_version
