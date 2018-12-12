@@ -11,7 +11,6 @@ def build_app!
   install_gem 'tty-prompt' # Used for this script
   install_gem 'pastel'
   install_gem 'highline'
-  install_gem 'html2slim'
 
   debug_print('Checking your environment setup...')
 
