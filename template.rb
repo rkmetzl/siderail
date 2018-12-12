@@ -2,7 +2,7 @@ require 'fileutils'
 require 'shellwords'
 require 'bundler/inline'
 
-YARG_REPO = 'https://github.com/rkmetzl/yarg.git'.freeze
+YARG_REPO = 'https://github.com/rkmetzl/siderail.git'.freeze
 RAILS_REQUIREMENT = '~> 5.2.0'.freeze
 
 def build_app!
@@ -103,7 +103,7 @@ end
 def add_template_repository_to_source_path
   if __FILE__ =~ %r{\Ahttps?://}
     require "tmpdir"
-    source_paths.unshift(tempdir = Dir.mktmpdir("yarg-"))
+    source_paths.unshift(tempdir = Dir.mktmpdir("siderail-"))
     at_exit { FileUtils.remove_entry(tempdir) }
     git clone: [
       "--quiet",
@@ -111,7 +111,7 @@ def add_template_repository_to_source_path
       tempdir
     ].map(&:shellescape).join(" ")
 
-    if (branch = __FILE__[%r{yarg/(.+)/template.rb}, 1])
+    if (branch = __FILE__[%r{siderail/(.+)/template.rb}, 1])
       Dir.chdir(tempdir) { git checkout: branch }
     end
   else
