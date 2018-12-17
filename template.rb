@@ -64,7 +64,6 @@ def build_app!
     apply 'variants/pundit/template.rb'         if @result.dig(:user, :authorization)
     apply 'variants/sentry/template.rb'         if @result[:sentry]
     apply 'variants/simple_form/template.rb'
-    apply 'variants/friendly_id/template.rb'
     generate :friendly_id
     apply 'variants/active_storage/template.rb' if @result[:activestorage]
 
