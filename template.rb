@@ -26,7 +26,9 @@ def build_app!
   input_confirm = false
   while !input_confirm
     # Override defaults to fix a bug in TTY::Prompt
+    Pastel::ANSI::ATTRIBUTES.unfreeze
     Pastel::ANSI::ATTRIBUTES[:bright_black] = 93
+    Pastel::ANSI::ATTRIBUTES.freeze
 
     prompt = TTY::Prompt.new(help_color: :yellow, prefix: '[?] ')
     @result = get_user_input(prompt)
