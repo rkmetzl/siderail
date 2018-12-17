@@ -62,9 +62,11 @@ def build_app!
     # Copy variants as necessary
     apply 'variants/devise/template.rb'         if @result.dig(:user, :authentication)
     apply 'variants/pundit/template.rb'         if @result.dig(:user, :authorization)
-    apply 'variants/sentry/template.rb'         if @result["sentry"]
+    apply 'variants/sentry/template.rb'         if @result[:sentry]
     apply 'variants/simple_form/template.rb'
-    apply 'variants/active_storage/template.rb' if @result["active_storage"]
+    apply 'variants/friendly_id/template.rb'
+    generate :friendly_id
+    apply 'variants/active_storage/template.rb' if @result[:activestorage]
 
     # This should run last since it converts all generated ERB
     # to HAML
@@ -75,6 +77,10 @@ def build_app!
       apply 'variants/slim/template.rb'
     else
       debug_print "Using ERB"
+    end
+
+    if @result[:delete_erb]
+      run "find app/views/ -type f -name '*.erb' -delete"
     end
 
     debug_print('Running bin/setup to finish setting up your environment...')
@@ -181,6 +187,12 @@ def get_user_input(prompt)
 
     # Views
     key(:views).select("What view templating system would you like to use?", views)
+
+  end
+
+  result[:delete_erb] = false
+  if result[:views] != "erb"
+    result[:delete_erb] = prompt.yes?("Do you want to remove the original .erb files?", default: false)
   end
 
   # Make some variables easily accessible
