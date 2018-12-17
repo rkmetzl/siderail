@@ -27,7 +27,7 @@ def build_app!
   while !input_confirm
     # Override defaults to fix a bug in TTY::Prompt
     updated_colors = Pastel::ANSI::ATTRIBUTES.dup
-    updated_colors[:bright_black] = 93
+    updated_colors[:bright_black] = 33
     Pastel::ANSI.const_set(:ATTRIBUTES, updated_colors.freeze)
 
     prompt = TTY::Prompt.new(help_color: :yellow, prefix: '[?] ')
