@@ -36,29 +36,30 @@ To start, you should have the following services installed and running locally
 
 On OS X, you can install these by running the following:
 
-```
+``` bash
 brew install postgres redis
 ```
 
 You may need to start these services manually:
-```
+``` bash
 brew services start postgres
 brew services start redis
 ```
 
 This generator relies on Ruby 2.5.x and Rails 5.2.x, as well as Bundler:
-```
+``` bash
 rvm install 2.5
+rvm use 2.5.x # whichever patch version rvm installed. At the time of writing, it is 2.5.3.
 gem install bundler
 gem install rails
 ```
-If you're using rbenv or another Ruby version manager, ensure you have at least version 2.5 of Ruby MRI installed.
+If you're using rbenv or another Ruby version manager, ensure you have at least version 2.5 of Ruby MRI installed and active.
 
 All other dependencies will be installed when the script is run.
 
 ## Running the Generator
 Run with the following command:
-```
+``` bash
 rails new myapp -T -d postgresql -m https://raw.githubusercontent.com/rkmetzl/siderail/master/template.rb
 ```
 

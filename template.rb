@@ -25,6 +25,9 @@ def build_app!
 
   input_confirm = false
   while !input_confirm
+    # Override defaults to fix a bug in TTY::Prompt
+    Pastel::ANSI::ATTRIBUTES[:bright_black] = 93
+
     prompt = TTY::Prompt.new(help_color: :yellow, prefix: '[?] ')
     @result = get_user_input(prompt)
     pp @result
@@ -192,7 +195,7 @@ def get_user_input(prompt)
 
   result[:delete_erb] = false
   if result[:views] != "erb"
-    result[:delete_erb] = prompt.yes?("Do you want to remove the original .erb files?", default: false)
+    result[:delete_erb] = prompt.yes?("Do you want to remove the original .erb files?")
   end
 
   # Make some variables easily accessible
