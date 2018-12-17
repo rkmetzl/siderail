@@ -28,7 +28,7 @@ def build_app!
     # Override defaults to fix a bug in TTY::Prompt
     updated_colors = Pastel::ANSI::ATTRIBUTES.dup
     updated_colors[:bright_black] = 93
-    Pastel::ANSI::ATTRIBUTES = updated_colors.freeze
+    Pastel::ANSI.const_set(:ATTRIBUTES, updated_colors.freeze)
 
     prompt = TTY::Prompt.new(help_color: :yellow, prefix: '[?] ')
     @result = get_user_input(prompt)
