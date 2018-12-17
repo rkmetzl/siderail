@@ -60,7 +60,7 @@ def build_app!
     stop_spring
 
     # Copy variants as necessary
-    apply 'variants/devise/template.rb'         if @result.dig(:user, :authentication)
+    apply 'variants/devise/template.rb'         if @result.dig(:user).present?
     apply 'variants/pundit/template.rb'         if @result.dig(:user, :authorization)
     apply 'variants/sentry/template.rb'         if @result[:sentry]
     apply 'variants/simple_form/template.rb'
@@ -177,7 +177,6 @@ def get_user_input(prompt)
     if prompt.yes?("Will this app have users?")
       key(:user) do
         key(:model_name).ask("What is the name of your user model?", default: "user")
-        key(:authentication).yes?("Do you want to install Devise to manage user authentication?")
         key(:authorization).yes?("Do you want to install Pundit to manage user access control?")
       end
     end
