@@ -26,5 +26,3 @@ end
 
 # simple_form
 insert_into_file 'Gemfile', "gem 'simple_form'\n", after: /["']kaminari['"]\n/
-
-run 'bundle install'
