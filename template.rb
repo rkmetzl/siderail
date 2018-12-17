@@ -54,6 +54,8 @@ def build_app!
   apply 'lib/template.rb'
   apply 'spec/template.rb'
 
+  apply 'gemfile_update.rb'
+
   after_bundle do
     git :init
 

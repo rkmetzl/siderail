@@ -1,9 +1,5 @@
 source_dir = 'variants/devise/spec'.freeze
 
-insert_into_file 'Gemfile', "gem 'devise'\n", after: /["']kaminari['"]\n/
-
-run 'bundle install'
-
 generate 'devise:install'
 
 generate :devise, @result[:user_class][:down_string]
